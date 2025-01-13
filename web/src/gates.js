@@ -1,7 +1,10 @@
-import { Wire } from "./wire.js"
+import { Wire } from './wire.js'
 
 class Gate {
+	static GATE_LINE_WIDTH = 2;
+
 	constructor(ports) {
+		this.pos = [0,0];
 		this.ports = ports;
 		this.inputs = new Array(this.ports);
 		this.output = new Wire(0, 0);
@@ -13,6 +16,14 @@ class Gate {
 
 	update_value() {
 		throw new Error("Implement update_value() function");
+	}
+
+	draw(ctx) {
+		throw new Error("Implement draw(ctx) function");
+	}
+
+	set_pos(x, y) {
+		this.pos = [x,y];
 	}
 
 	connect_wire(w, p) {
@@ -34,6 +45,18 @@ class NOT extends Gate {
 		this.update_value();
 	}
 
+	draw(ctx) {
+		ctx.lineWidth = Gate.GATE_LINE_WIDTH;
+		ctx.fillStyle = "white";
+		ctx.beginPath();
+		ctx.moveTo(this.pos[0], this.pos[1]);
+		ctx.lineTo(this.pos[0] - 25, this.pos[1] + 20);
+		ctx.lineTo(this.pos[0] - 25, this.pos[1] - 20);
+		ctx.lineTo(this.pos[0], this.pos[1]);
+		ctx.fill();
+		ctx.stroke();
+	}
+
 	update_value() {
 		this.output.update_value(this.inputs[0].value ? 0 : 1);
 	}
@@ -44,6 +67,9 @@ class AND extends Gate {
 		super(p);
 
 		this.update_value();
+	}
+
+	draw(ctx) {
 	}
 
 	update_value() {
@@ -65,6 +91,9 @@ class OR extends Gate {
 		super(p);
 
 		this.update_value();
+	}
+
+	draw(ctx) {
 	}
 
 	update_value() {
