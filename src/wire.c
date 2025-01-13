@@ -1,5 +1,6 @@
 #include "wire.h"
 #include "gate.h"
+#include "led.h"
 #include <assert.h>
 #include <stdlib.h>
 
@@ -31,7 +32,12 @@ void update_wire_value(wire *w, bool new_v) {
 	w->val = new_v;
 
 	if (w->is_input) {
-		update_gate_value(w->gate, w->gate_type);
+		if (w->gate_type == LED_GATE_ID) {
+			led *l = (led*) w->gate;
+			l->is_on = new_v;
+		} else {
+			update_gate_value(w->gate, w->gate_type);
+		}
 	}
 }
 

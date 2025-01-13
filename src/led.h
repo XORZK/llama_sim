@@ -1,6 +1,9 @@
 #ifndef LED_H
 #define LED_H
 
+#define LED_GATE_ID 10
+
+#include "wire.h"
 #include <stdbool.h>
 typedef struct led {
 	bool is_on;

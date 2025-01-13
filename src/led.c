@@ -28,5 +28,8 @@ void connect_wire_to_led(led *l, wire *in) {
 
 	if (l->in) {
 		l->is_on = l->in->val;
+		in->is_input = true;
+		in->gate = (void*) l;
+		in->gate_type = LED_GATE_ID;
 	}
 }
