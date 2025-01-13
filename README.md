@@ -12,13 +12,20 @@ A simple logic circuit simulator.
 	- If the state of the wire changes (for example: by toggling the state of a switch), then we can adjust the state of the connected gate accordingly (using the pointer stored in the wire structure).
 	- If the gates output changes as the input (wire) changes, then we update the state of the gates output wire (if it exists).
 	- Similarly, if this output wire of gate #1 is an input to some other gate #2, then we repeat the same process, but now, we update the state of gate #2.
-	- This process is repeated until our wire is NOT an input wire.
+	- This process is repeated until our wire is **NOT** an input wire or until we reach a dead end.
 
 <p align="center" width="100%">
     <img width="100%" src="https://raw.githubusercontent.com/XORZK/llama_sim/refs/heads/main/img/circuit_example.png">
-	circuit example
+	circuit example (pt. 1) (using logic.ly)
 </p>
 
+<p align="center" width="100%">
+    <img width="100%" src="https://raw.githubusercontent.com/XORZK/llama_sim/refs/heads/main/img/circuit_example_on.png">
+	circuit example (pt. 2) (using logic.ly)
+</p>
+
+
+In the example above, 
 
 
 ## simple demo: toggling a switch
