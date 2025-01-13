@@ -7,8 +7,11 @@ A simple logic circuit simulator.
 - The idea is relatively simple in practice: a bunch of interconnected structures.
 - All electronics (switches, gates, etc) are connected via "wires".
 - Gates can have multiple input wires, but typically only have 1 output wire. 
+	- Each gate holds references to each input and output wires.
 - If a wire is an input to a gate, then it stores a pointer to the gate.
 	- If the state of the wire changes, then we can refer to the pointer to the gate, and adjust accordingly to the new state of the wire.
+	- If the gate output changes as the input changes, and the output wire of the gate is an input wire to another gate, then we repeat the same process. 
+	- This process is repeated until the output of some gate is NOT an input as well.
 
 ## simple demo: toggling a switch
 ```c
