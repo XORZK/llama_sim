@@ -16,8 +16,9 @@ int main(void) {
 
 	toggle_switch_status(sw); // turns switch sw on
 
-	connect_wire_to_switch(sw, w); // connects the wire w to 
-					// represent the output of sw
+	// connects the wire w
+	// to the output of switch sw
+	connect_wire_to_switch(sw, w);
 
 	printf("%d\n", w->val); // outputs: 1
 
