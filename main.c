@@ -13,5 +13,9 @@ int main(void) {
 
 	printf("%d\n", w->val);
 
+	toggle_switch_status(sw);
+
+	printf("%d\n", w->val);
+
 	return 0;
 }
