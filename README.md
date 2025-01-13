@@ -24,8 +24,13 @@ A simple logic circuit simulator.
 	circuit example (pt. 2) (using logic.ly)
 </p>
 
-In the example above, switching on `s1` causes the signal in `w1` to be `on`. Since `w1` is a input wire to gate `g1`, we need to recompute the output of `g1`. Since `g1` is a NOT gate, and its input is `ON`, then its output will be `OFF`. Now, we can also see that our `w2` wire also changes state from `ON` --> `OFF`, and thus, we need to recompute the output of `g2` which is an OR gate.
-
+In the example above:
+1. Switching on `s1` causes the signal in `w1` to be `ON`.
+2. Since `s1` is an input wire to gate `g1`, then we need to recompute the output of `g1`. 
+3. Since `g1` is a **NOT** gate, and its input is `ON`, then its output will be `OFF`.
+4. By changing out output to our `g1` gate, our `w2` wire also changes state from `ON` to `OFF`, so we need to recompute the output of `g2`.
+5. Since `g2` is an **OR** gate, and both its input are `OFF`, then its output will also be `OFF`.
+6. Thus, our output (LED) is OFF.
 
 ## simple demo: toggling a switch
 ```c
