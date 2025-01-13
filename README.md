@@ -9,9 +9,10 @@ A simple logic circuit simulator.
 - Gates can have multiple input wires, but typically only have 1 output wire. 
 	- Each gate holds references to each input and output wires.
 - If a wire is an input to a gate, then it stores a pointer to the gate.
-	- If the state of the wire changes, then we can refer to the pointer to the gate, and adjust accordingly to the new state of the wire.
-	- If the gate output changes as the input changes, and the output wire of the gate is an input wire to another gate, then we repeat the same process. 
-	- This process is repeated until the output of some gate is NOT an input as well.
+	- If the state of the wire changes (for example: by toggling the state of a switch), then we can adjust the state of the connected gate accordingly (using the pointer stored in the wire structure).
+	- If the gates output changes as the input (wire) changes, then we update the state of the gates output wire (if it exists).
+	- Similarly, if this output wire of gate #1 is an input to some other gate #2, then we repeat the same process, but now, we update the state of gate #2.
+	- This process is repeated until our wire is NOT an input wire.
 
 ## simple demo: toggling a switch
 ```c
