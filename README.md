@@ -14,6 +14,13 @@ A simple logic circuit simulator.
 	- Similarly, if this output wire of gate #1 is an input to some other gate #2, then we repeat the same process, but now, we update the state of gate #2.
 	- This process is repeated until our wire is NOT an input wire.
 
+<p align="center" width="100%">
+    <img width="100%" src="https://raw.githubusercontent.com/XORZK/llama_sim/refs/heads/main/img/circuit_example.png">
+	circuit example
+</p>
+
+
+
 ## simple demo: toggling a switch
 ```c
 #include <stdio.h>
