@@ -24,8 +24,7 @@ A simple logic circuit simulator.
 	circuit example (pt. 2) (using logic.ly)
 </p>
 
-
-In the example above, 
+In the example above, switching on `s1` causes the signal in `w1` to be `on`. Since `w1` is an input to `g1`, we need to recompute the output of `g1`. Since `g1` is a NOT gate, its new output 
 
 
 ## simple demo: toggling a switch
