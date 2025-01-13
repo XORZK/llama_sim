@@ -3,8 +3,6 @@ A simple logic circuit simulator.
 
 *llama_sim* is a tool written in C that allows users to create and simulate logic circuits. These circuits are composed of elementary logic gates and electronics: switches, NOT gates, OR gates, AND gates, etc.
 
-
-
 ## the idea
 - The idea is relatively simple in practice: a bunch of interconnected structures.
 - All electronics (switches, gates, etc) are connected via "wires".
@@ -15,6 +13,53 @@ A simple logic circuit simulator.
 	- If the gates output changes as the input (wire) changes, then we update the state of the gates output wire (if it exists).
 	- Similarly, if this output wire of gate #1 is an input to some other gate #2, then we repeat the same process, but now, we update the state of gate #2.
 	- This process is repeated until our wire is **NOT** an input wire or until we reach a dead end.
+
+## structs
+
+### `wire.h`
+```c
+typedef struct wire {
+	bool val, is_input;
+	void* gate;
+	int gate_type; // gate and gate_type are only
+				   // used if wire is an input, so when
+				   // we update the value of wire, we can update
+				   // the output of the gate.
+} wire;
+```
+
+### `switch.h`
+```c
+typedef struct toggle_switch {
+	bool is_on;
+	wire *out;
+} toggle_switch;
+```
+
+### `led.h`
+```c
+typedef struct led {
+	bool is_on;
+	wire *in;
+} led;
+```
+
+### `gate.h`
+```c
+typedef struct NOT {
+	wire *in, *out;
+} NOT;
+
+typedef struct AND {
+	int ports;
+	wire **in, *out;
+} AND;
+
+typedef struct OR {
+	int ports;
+	wire **in, *out;
+} OR;
+```
 
 ## simple demo: toggling a switch
 ```c

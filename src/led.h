@@ -5,6 +5,7 @@
 
 #include "wire.h"
 #include <stdbool.h>
+
 typedef struct led {
 	bool is_on;
 	wire *in;
