@@ -44,7 +44,7 @@ int main(void) {
 }
 ```
 
-## example
+## example circuit
 <p align="center" width="100%">
     <img width="100%" src="https://raw.githubusercontent.com/XORZK/llama_sim/refs/heads/main/img/circuit_example.png">
 	circuit example (pt. 1) (using logic.ly)
