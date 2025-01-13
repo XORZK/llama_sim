@@ -22,9 +22,9 @@ typedef struct wire {
 	bool val, is_input;
 	void* gate;
 	int gate_type; // gate and gate_type are only
-				   // used if wire is an input, so when
-				   // we update the value of wire, we can update
-				   // the output of the gate.
+			// used if wire is an input, so when
+			// we update the value of wire, we can update
+			// the output of the gate.
 } wire;
 ```
 
