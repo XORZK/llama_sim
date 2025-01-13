@@ -60,7 +60,7 @@ In the example above:
 5. Since `g2` is an **OR** gate, and both its input are `OFF`, then its output will also be `OFF`.
 6. Thus, our output (LED) is OFF.
 
-## creating this circuit in `llama_sim`
+### creating this circuit in `llama_sim`
 ```c
 
 ```
