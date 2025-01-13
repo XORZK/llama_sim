@@ -7,9 +7,9 @@ int main(void) {
 
 	wire *w = init_wire(0, 0);
 
-	toggle_switch_status(sw);
-
 	connect_wire_to_switch(sw, w);
+
+	toggle_switch_status(sw);
 
 	printf("%d\n", w->val);
 

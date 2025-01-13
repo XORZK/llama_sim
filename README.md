@@ -72,12 +72,13 @@ int main(void) {
 
 	wire *w = init_wire(0, 0);
 
-	// toggle switch sw: on
-	toggle_switch_status(sw);
 
 	// connects the wire w
 	// to the output of switch sw
 	connect_wire_to_switch(sw, w);
+
+	// toggle switch sw: on
+	toggle_switch_status(sw);
 
 	printf("%d\n", w->val); // outputs: 1
 
