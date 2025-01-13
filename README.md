@@ -14,7 +14,8 @@ int main(void) {
 
 	wire *w = init_wire(0, 0);
 
-	toggle_switch_status(sw); // turns switch sw on
+	// turn switch sw: on
+	toggle_switch_status(sw);
 
 	// connects the wire w
 	// to the output of switch sw
