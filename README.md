@@ -16,7 +16,7 @@ A simple logic circuit simulator.
 
 ## structs
 
-### `wire.h`
+#### `wire.h`
 ```c
 typedef struct wire {
 	bool val, is_input;
@@ -28,7 +28,7 @@ typedef struct wire {
 } wire;
 ```
 
-### `switch.h`
+#### `switch.h`
 ```c
 typedef struct toggle_switch {
 	bool is_on;
@@ -36,7 +36,7 @@ typedef struct toggle_switch {
 } toggle_switch;
 ```
 
-### `led.h`
+#### `led.h`
 ```c
 typedef struct led {
 	bool is_on;
@@ -44,7 +44,7 @@ typedef struct led {
 } led;
 ```
 
-### `gate.h`
+#### `gate.h`
 ```c
 typedef struct NOT {
 	wire *in, *out;
