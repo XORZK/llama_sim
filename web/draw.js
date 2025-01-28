@@ -1,8 +1,7 @@
 import { Wire } from './src/wire.js'
-import { Gate, NOT, AND, OR } from './src/gates.js'
+import { NOT, AND, OR } from './src/gates.js'
 import { Switch } from './src/switch.js'
 
-var wires = [];
 var gates = [];
 
 function draw() {
@@ -10,13 +9,22 @@ function draw() {
     const ctx = canvas.getContext("2d");
 	const rect = canvas.getBoundingClientRect();
 
-	var n = new NOT(0, 0);
-	n.set_pos(50, 50);
+	var n1 = new NOT(0, 0);
+	var n2 = new NOT(0, 0);
+	var n3 = new AND(2);
 
-	gates.push(n);
+	var s = new Switch();
+
+	n1.set_pos(50, 50);
+	n2.set_pos(100, 100);
+	n3.set_pos(150, 150);
+
+	gates.push(n1);
+	gates.push(n2);
+	gates.push(n3);
 
 	for (var j = 0; j < gates.length; ++j) {
-		n.draw(ctx);
+		gates[j].draw(ctx);
 	}
 
 	document.addEventListener("mousemove", (event) => {
@@ -24,66 +32,105 @@ function draw() {
 
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-		var wire_selected = false;
+		var wire_selected = false, gate_selected = false;
 
-		for (var j = 0; j < wires.length; ++j) {
-			var w = wires[j];
-			var p1 = w.p1, p2 = w.p2;
+		for (var j = 0; j < gates.length; ++j) {
+			var g = gates[j];
 
-			var d1 = (p1[0]-mouseX)*(p1[0]-mouseX)+(p1[1]-mouseY)*(p1[1]-mouseY),
-				d2 = (p2[0]-mouseX)*(p2[0]-mouseX)+(p2[1]-mouseY)*(p2[1]-mouseY);
+			// check wires
+			for (var k = 0; k < g.inputs.length; ++k) {
+				var input = g.inputs[k];
+				var on_input = input.hovering(mouseX, mouseY);
 
-			if (!wire_selected) {
-				if (!(w.dragged[0] || w.dragged[1])) {
-					var rs = Wire.WIRE_RADIUS * Wire.WIRE_RADIUS;
-					if (d1 <= rs) {
-						w.selected = [true,false];
-						wire_selected = true;
-					} else if (d2 <= rs) {
-						w.selected = [false,true];
-						wire_selected = true;
+				if (!input.dragged[0] && !input.dragged[1]) {
+					if (on_input[0]) {
+						input.selected = [1,0];
+						wire_selected = 1;
 					} else {
-						w.selected = [false,false];
+						input.selected = [0,0];
 					}
-				} else {
-					if (w.dragged[0]) {
-						w.p1 = [mouseX, mouseY];
-					} else {
-						w.p2 = [mouseX, mouseY];
-					}
+				// check possible connect: in -> out
+				} else if (input.dragged[0]) {
+					
+					input.set_p1(mouseX, mouseY);
+				}			
+			}
+
+			if (!gate_selected && !wire_selected) {
+				var on_target = g.hovering(mouseX, mouseY);
+				g.selected = on_target;
+
+				gate_selected = (gate_selected | g.selected);
+
+				if (!g.selected) {
+					g.dragged = 0;
+				}
+				
+				if (g.selected && g.dragged) {
+					g.set_pos(mouseX - g.dx, mouseY - g.dy);
 				}
 			}
 
-			wires[j].draw(ctx);
-		}
-
-		for (var j = 0; j < gates.length; ++j) {
-			gates[j].draw(ctx);
+			g.draw(ctx);
 		}
 	});
 
 	document.addEventListener("mousedown", (event) => {
 		const mouseX = event.clientX - rect.left, mouseY = event.clientY - rect.top;
 
-		for (var j = 0; j < wires.length; ++j) {
-			var w = wires[j];
-			if (w.selected[0]) {
-				w.dragged[0] = true;
-			} else if (w.selected[1]) {
-				w.dragged[1] = true;
+		for (var j = 0; j < gates.length; ++j) {
+			var g = gates[j];
+
+			var has_wire = false;
+
+			for (var k = 0; k < g.inputs.length; ++k) {
+				var wire = g.inputs[k];
+				wire.dragged = wire.selected.slice();
+				if (wire.dragged[0] || wire.dragged[1]) {
+					has_wire = true;
+					break;
+				}
+			}
+
+			if (!has_wire && g.selected) {
+				g.dragged = true;
+				g.dx = (mouseX - g.pos[0]);
+				g.dy = (mouseY - g.pos[1]);
 			}
 		}
 	});
 
 	document.addEventListener("mouseup", (event) => {
 		const mouseX = event.clientX - rect.left, mouseY = event.clientY - rect.top;
+		for (var j = 0; j < gates.length; ++j) {
+			var g = gates[j];
 
-		for (var j = 0; j < wires.length; ++j) {
-			var w = wires[j];
-			if (w.selected[0]) {
-				w.dragged[0] = false;
-			} else if (w.selected[1]) {
-				w.dragged[1] = false;
+			for (var k = 0; k < g.inputs.length; ++k) {
+				var input = g.inputs[k];
+				if (input.dragged[0]) {
+					for (var l = 0; l < gates.length; ++l) {
+							if (l == j)
+								continue;
+
+							var output = gates[l];
+							var on_output = output.output.hovering(mouseX, mouseY);
+							var on_gate = output.hovering(mouseX, mouseY);
+
+							if (on_output[0] || on_output[1] || on_gate) {
+								var pos = input.p2;
+								g.connect_wire(output.output, k);
+								console.log("CONNECTED");
+								output.output.p2 = pos;
+							}
+						}
+
+				}
+				input.dragged[0] = false;
+				input.dragged[1] = false;
+			}
+
+			if (g.selected) {
+				g.dragged = false;
 			}
 		}
 	});

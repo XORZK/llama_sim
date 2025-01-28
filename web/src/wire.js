@@ -13,6 +13,8 @@ class Wire {
 		this.p2 = [0, 0];
 		this.selected = [false,false];
 		this.dragged = [false,false];
+		this.connected = [false, false];
+		this.con = false;
 	}
 
 	set_p1(x,y) {
@@ -54,6 +56,14 @@ class Wire {
 
 	toggle() {
 		this.update_value(this.value ? 0 : 1);
+	}
+
+	hovering(mx, my) {
+		var d1 = (this.p1[0]-mx)*(this.p1[0]-mx)+(this.p1[1]-my)*(this.p1[1]-my),
+			d2 = (this.p2[0]-mx)*(this.p2[0]-mx)+(this.p2[1]-my)*(this.p2[1]-my);
+		var r = Wire.WIRE_RADIUS;
+
+		return [d1<=r*r,d2<=r*r]
 	}
 };
 
