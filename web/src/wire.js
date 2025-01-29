@@ -26,12 +26,14 @@ class Wire {
 	}
 
 	draw(ctx) {
+		ctx.strokeStyle = (this.value ? "#ADD8E6" : "#808080");
 		ctx.lineWidth = Wire.WIRE_LINE_WIDTH;
 		ctx.beginPath();
 		ctx.moveTo(this.p1[0], this.p1[1]);
 		ctx.lineTo(this.p2[0], this.p2[1]);
 		ctx.stroke();
 
+		ctx.strokeStyle = "black";
 		ctx.fillStyle = (this.selected[0] ? "grey" : "white");
 		ctx.lineWidth = Wire.WIRE_CIRCLE_WIDTH;
 		ctx.beginPath();

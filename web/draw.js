@@ -1,6 +1,7 @@
 import { Wire } from './src/wire.js'
 import { NOT, AND, OR } from './src/gates.js'
 import { Switch } from './src/switch.js'
+import { Light } from './src/light.js'
 
 var gates = [];
 
@@ -13,15 +14,24 @@ function draw() {
 	var n2 = new NOT(0, 0);
 	var n3 = new AND(2);
 
-	var s = new Switch();
+	var s1 = new Switch(),
+		s2 = new Switch();
+
+	var l1 = new Light();
 
 	n1.set_pos(50, 50);
 	n2.set_pos(100, 100);
 	n3.set_pos(150, 150);
+	s1.set_pos(200, 200);
+	s2.set_pos(250, 250);
+	l1.set_pos(250, 250);
 
 	gates.push(n1);
 	gates.push(n2);
 	gates.push(n3);
+	gates.push(s1);
+	gates.push(s2);
+	gates.push(l1);
 
 	for (var j = 0; j < gates.length; ++j) {
 		gates[j].draw(ctx);
@@ -51,7 +61,6 @@ function draw() {
 					}
 				// check possible connect: in -> out
 				} else if (input.dragged[0]) {
-					
 					input.set_p1(mouseX, mouseY);
 				}			
 			}
@@ -85,6 +94,8 @@ function draw() {
 
 			for (var k = 0; k < g.inputs.length; ++k) {
 				var wire = g.inputs[k];
+				if (wire.con)
+					continue;
 				wire.dragged = wire.selected.slice();
 				if (wire.dragged[0] || wire.dragged[1]) {
 					has_wire = true;
@@ -116,11 +127,14 @@ function draw() {
 							var on_output = output.output.hovering(mouseX, mouseY);
 							var on_gate = output.hovering(mouseX, mouseY);
 
+							if (output.connected)
+								continue;
+
 							if (on_output[0] || on_output[1] || on_gate) {
 								var pos = input.p2;
 								g.connect_wire(output.output, k);
-								console.log("CONNECTED");
 								output.output.p2 = pos;
+								output.connected = true;
 							}
 						}
 
@@ -131,6 +145,24 @@ function draw() {
 
 			if (g.selected) {
 				g.dragged = false;
+			}
+		}
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key == "Enter") {
+			for (var j = 0; j < gates.length; ++j) {
+				var g = gates[j];
+
+				if (g.selected && g instanceof Switch) {
+					g.update_value();
+					g.draw(ctx);
+				}
+			}
+
+			for (var j = 0; j < gates.length; ++j) {
+				var g = gates[j];
+				g.draw(ctx);
 			}
 		}
 	});

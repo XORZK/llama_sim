@@ -1,7 +1,7 @@
 import { Wire } from './wire.js'
 
 class Gate {
-	static GATE_OUTLINE_LINE_WIDTH = 6;
+	static GATE_OUTLINE_LINE_WIDTH = 10;
 	static GATE_LINE_WIDTH = 2;
 	static GATE_WIDTH = 75;
 	static GATE_HEIGHT = 75;
@@ -14,6 +14,7 @@ class Gate {
 		this.output = new Wire(0, 0);
 		this.selected = false;
 		this.dragged = false;
+		this.connected = false;
 
 		for (var j = 0; j < this.ports; ++j) {
 			this.inputs[j] = new Wire(0, 1);
@@ -30,7 +31,7 @@ class Gate {
 
 		if (this.selected) {
 			ctx.lineWidth = Gate.GATE_OUTLINE_LINE_WIDTH;
-			ctx.strokeStyle = "red";
+			ctx.strokeStyle = (this.output.value ? "#ADD8E6" : "#808080");
 			ctx.beginPath();
 			ctx.rect(this.pos[0], this.pos[1], Gate.GATE_WIDTH, Gate.GATE_HEIGHT);
 			ctx.stroke();
@@ -48,6 +49,10 @@ class Gate {
 		for (var j = 0; j < this.ports; ++j) {
 			this.inputs[j].draw(ctx);
 		}
+
+		ctx.fillStyle = "black";
+		ctx.font = "20px Consolas"
+		ctx.fillText(this.text, this.pos[0] + 2*Gate.GATE_WIDTH/7, this.pos[1] + 7*Gate.GATE_HEIGHT/12);
 	}
 
 	set_pos(x, y) {
@@ -58,7 +63,6 @@ class Gate {
 		}
 
 		this.output.set_p1(x + Gate.GATE_WIDTH, y + Gate.GATE_HEIGHT/2);
-
 
 		// For now, assume only 1 or 2 inputs
 		if (this.ports == 1) {
@@ -96,7 +100,8 @@ class Gate {
 
 	hovering(mx, my) {
 		var w = Gate.GATE_WIDTH, h = Gate.GATE_HEIGHT;
-		return (mx >= this.pos[0] && mx <= this.pos[0]+w && my >= this.pos[1] && my <= this.pos[1] + h);
+		this.selected = (mx >= this.pos[0] && mx <= this.pos[0]+w && my >= this.pos[1] && my <= this.pos[1] + h);
+		return this.selected;
 	}
 };
 
@@ -104,6 +109,7 @@ class NOT extends Gate {
 	constructor() {
 		super(1);
 
+		this.text = "NOT";
 		this.update_value();
 	}
 
@@ -116,6 +122,7 @@ class AND extends Gate {
 	constructor(p) {
 		super(p);
 
+		this.text = "AND";
 		this.update_value();
 	}
 
@@ -137,10 +144,8 @@ class OR extends Gate {
 	constructor(p) {
 		super(p);
 
+		this.text = "OR"
 		this.update_value();
-	}
-
-	draw(ctx) {
 	}
 
 	update_value() {

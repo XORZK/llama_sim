@@ -1,23 +1,18 @@
-import { Wire } from './wire.js'
+import { Gate } from './gates.js';
 
-class Switch {
+class Switch extends Gate {
 	constructor() {
-		this.output = new Wire(0, 0);
-	}
-
-	// connect wire to output
-	connect_wire(w) {
-		var is_on = this.output.value;
-		this.output = w;
-
-		if (this.output) {
-			this.output.is_input = 0;
-			this.output.update_value(is_on);
-		}
+		super(0);
+		this.text = "OFF";
 	}
 
 	toggle() {
 		this.output.toggle();
+		this.text = (this.output.value ? "ON" : "OFF");
+	}
+
+	update_value() {
+		this.toggle();
 	}
 
 	out() {
