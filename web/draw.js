@@ -24,7 +24,7 @@ function draw() {
 	n3.set_pos(150, 150);
 	s1.set_pos(200, 200);
 	s2.set_pos(250, 250);
-	l1.set_pos(250, 250);
+	l1.set_pos(300, 300);
 
 	gates.push(n1);
 	gates.push(n2);

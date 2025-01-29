@@ -30,6 +30,12 @@ class Light extends Gate {
 		ctx.fill();
         ctx.stroke();
 
+        if (!this.output.value) {
+            ctx.fillStyle = "black";
+            ctx.font = "20px Consolas"
+            ctx.fillText("OFF", this.pos[0] + 2*Gate.GATE_WIDTH/7, this.pos[1] + 7*Gate.GATE_HEIGHT/12);
+        }
+
 		for (var j = 0; j < this.ports; ++j) {
 			this.inputs[j].draw(ctx);
 		}
